@@ -56,17 +56,49 @@ if page == " Home":
     st.markdown("Welcome! Explore AI-driven healthcare solutions across **10 use cases**.")
     st.image("ai-in-health-care-infographic-vector.jpg", width=600)
 
+# elif page == " Chatbot":
+#     st.title("Healthcare Chatbot")
+#     st.write("Ask about symptoms, appointments, or FAQs.")
+#     user_input = st.text_input("You:", "")
+#     if user_input:
+#         if "fever" in user_input.lower():
+#             st.write(" Bot: You may have viral fever. Please schedule an appointment with a physician.")
+#         elif "appointment" in user_input.lower():
+#             st.write(" Bot: Sure! Please provide preferred date & department.")
+#         else:
+#             st.write(" Bot: Sorry, I can only help with symptoms & appointments for now.")
 elif page == " Chatbot":
     st.title("Healthcare Chatbot")
-    st.write("Ask about symptoms, appointments, or FAQs.")
+    st.write("Ask about appointments, symptoms, or FAQs.")
     user_input = st.text_input("You:", "")
+    
+    # Predefined FAQ responses (safe answers)
+    faq_responses = {
+        "fever": "Common symptoms of fever include high temperature, chills, and body aches. Please consult a doctor for diagnosis.",
+        "headache": "Headaches can be caused by stress, dehydration, or other conditions. If severe or persistent, schedule an appointment.",
+        "cough": "A persistent cough may indicate a respiratory infection. Please consult your physician if it continues."
+    }
+    
+    appointment_keywords = ["appointment", "book", "schedule", "reschedule", "cancel", "slot", "doctor"]
+    
     if user_input:
-        if "fever" in user_input.lower():
-            st.write(" Bot: You may have viral fever. Please schedule an appointment with a physician.")
-        elif "appointment" in user_input.lower():
-            st.write(" Bot: Sure! Please provide preferred date & department.")
+        user_text = user_input.lower()
+        
+        # Check for appointment-related queries
+        if any(keyword in user_text for keyword in appointment_keywords):
+            st.write(" Bot: Sure! Please provide your preferred date & department.")
+        
+        # Check for symptom-related queries
+        elif any(key in user_text for key in faq_responses.keys()):
+            # Find the first matching symptom keyword
+            for key in faq_responses.keys():
+                if key in user_text:
+                    st.write(f" Bot: {faq_responses[key]}")
+                    break
+        
+        # Fallback for everything else
         else:
-            st.write(" Bot: Sorry, I can only help with symptoms & appointments for now.")
+            st.write(" Bot: Sorry, I can only help with scheduling appointments or answering common symptom FAQs for now.")
 
 elif page == " Risk Stratification":
     st.title("Risk Stratification (Classification)")
